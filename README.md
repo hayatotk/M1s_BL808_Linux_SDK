@@ -2,18 +2,6 @@
 
 bl808 Linux
 
-```bash
-.
-├── bl808_dts         # kernel dts file
-├── bl_mcu_sdk_bl808  # bl_mcu_sdk for build low load bin
-├── build.sh          # build script
-├── linux-5.10.4-808  # linux kernel code
-├── opensbi-0.6-808   # opensbi code
-├── out               # bin file output dir
-├── toolchain         # build need toolchain
-└── README.md         # readme file
-```
-
 ## Environment Setup
 
 ### _Before doing anyything - clone this repo!_
@@ -22,18 +10,10 @@ Requirments:
 
     Ubuntu 20.04 - can be virtual machine or WSL
 
-Ubuntu20.04 needs to use apt to install the package:
+You weren't able to make firmware until you'll not prepare your system. 
 
-```bash
-sudo apt update && sudo apt install -y gcc make flex bison libncurses-dev device-tree-compiler lz4 --no-install-recommends --no-install-suggests
-```
-
-Download toolchains
-
-```bash
-mkdir -p M1s_BL808_Linux_SDK/toolchain/{cmake,elf_newlib_toolchain,linux_toolchain} && curl -L https://cmake.org/files/v3.19/cmake-3.19.3-Linux-x86_64.tar.gz | tar xz -C M1s_BL808_Linux_SDK/toolchain/cmake --strip-components=1 && curl -L https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1663142243961/Xuantie-900-gcc-elf-newlib-x86_64-V2.6.1-20220906.tar.gz | tar xz -C M1s_BL808_Linux_SDK/toolchain/elf_newlib_toolchain --strip-components=1 && curl -L https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1663142514282/Xuantie-900-gcc-linux-5.10.4-glibc-x86_64-V2.6.1-20220906.tar.gz | tar xz -C M1s_BL808_Linux_SDK/toolchain/linux_toolchain --strip-components=1
-
-```
+It's simple as running 
+    ./prepare.sh
 
 ## Compile
 
@@ -49,46 +29,14 @@ it works in the similar way as `build.sh` but it is compatible with most of CI/C
 make all # - cleans, then builds all targets below (w/o menuconfig)
 make opensbi # - builds openSBI (HAL-like blobs for running linux on rv)
 make menuconfig # - tui kernel configurator. If you know what is this - you know what is this
-make linux # - makes linux kernel
+make linux # - makes linux kernel (uncompressed)
+make kcompress # - compress linux kernel (necessary for making system image)
 make devicetree # - makes DTB (device tree blob from DTS)
 make bootloader # - makes bootloader
 make image # - makes image for flashing
 make clean # - cleans build artifacts
 ```
 
-
-otherwise you can use build.sh script
-
-Step by step
-
-```bash
-./build.sh --help
-./build.sh opensbi
-./build.sh kernel_config # generally it's a 'kmenuconfig'. Do everything on your own risk!
-./build.sh kernel
-./build.sh dtb
-./build.sh low_load
-./build.sh whole_bin
-```
-
-Or
-
-```bash
-./build.sh all
-```
-
-Then find the firmwares under out
-
-```bash
-├── fw_jump.bin
-├── hw.dtb.5M
-├── Image.lz4
-├── squashfs_test.img 
-├── low_load_bl808_d0.bin 
-├── low_load_bl808_m0.bin 
-├── merge_7_5Mbin.py
-└── whole_img_linux.bin
-```
 
 ## Download Firmware
 

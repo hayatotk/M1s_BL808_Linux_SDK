@@ -4,3 +4,6 @@
 [submodule "linux-5.10.4-808"]
 	path = linux-5.10.4-808
 	url = https://github.com/hayatotk/linux
+[submodule "bl_mcu_sdk_bl808"]
+	path = bl_mcu_sdk_bl808
+	url = https://github.com/hayatotk/bl_mcu_sdk

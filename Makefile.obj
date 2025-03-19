@@ -81,8 +81,10 @@ kcompress:
 clean:
 	@rm -rfv $(OUT_DIR)
 	@rm -rfv $(OPENSBI_DIR)/build
+	@rm -rfv $(OPENSBI_DIR)/build
 	@cd $(LINUX_SRC) && make clean
 	@cd $(BOOT_SRC) && make CMAKE_DIR=$(CMAKE_DIR) clean
+
 
 
 .PHONY: all image clean kcompress linux bootloader devicetree image menuconfig opensbi prepare
