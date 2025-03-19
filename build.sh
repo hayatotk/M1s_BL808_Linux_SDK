@@ -1,5 +1,5 @@
 #!/bin/bash
-set -xeu
+set -e
 
 SHELL_DIR=$(cd "$(dirname "$0")"; pwd)
 OUT_DIR=$SHELL_DIR/out

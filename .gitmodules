@@ -1,3 +1,6 @@
 [submodule "opensbi-0.6-808"]
 	path = opensbi-0.6-808
 	url = https://github.com/hayatotk/opensbi-808
+[submodule "linux-5.10.4-808"]
+	path = linux-5.10.4-808
+	url = https://github.com/hayatotk/linux

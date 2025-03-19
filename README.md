@@ -16,29 +16,55 @@ bl808 Linux
 
 ## Environment Setup
 
+### _Before doing anyything - clone this repo!_
+
+Requirments:
+
+    Ubuntu 20.04 - can be virtual machine or WSL
+
 Ubuntu20.04 needs to use apt to install the package:
 
 ```bash
-sudo apt install flex bison libncurses-dev device-tree-compiler lz4
+sudo apt update && sudo apt install -y gcc make flex bison libncurses-dev device-tree-compiler lz4 --no-install-recommends --no-install-suggests
 ```
 
 Download toolchains
 
 ```bash
-mkdir -p toolchain/cmake toolchain/elf_newlib_toolchain toolchain/linux_toolchain
-curl https://cmake.org/files/v3.19/cmake-3.19.3-Linux-x86_64.tar.gz | tar xz -C toolchain/cmake/ --strip-components=1
-curl https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1663142243961/Xuantie-900-gcc-elf-newlib-x86_64-V2.6.1-20220906.tar.gz | tar xz -C toolchain/elf_newlib_toolchain/ --strip-components=1
-curl https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1663142514282/Xuantie-900-gcc-linux-5.10.4-glibc-x86_64-V2.6.1-20220906.tar.gz | tar xz -C toolchain/linux_toolchain/ --strip-components=1
+mkdir -p M1s_BL808_Linux_SDK/toolchain/{cmake,elf_newlib_toolchain,linux_toolchain} && curl -L https://cmake.org/files/v3.19/cmake-3.19.3-Linux-x86_64.tar.gz | tar xz -C M1s_BL808_Linux_SDK/toolchain/cmake --strip-components=1 && curl -L https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1663142243961/Xuantie-900-gcc-elf-newlib-x86_64-V2.6.1-20220906.tar.gz | tar xz -C M1s_BL808_Linux_SDK/toolchain/elf_newlib_toolchain --strip-components=1 && curl -L https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1663142514282/Xuantie-900-gcc-linux-5.10.4-glibc-x86_64-V2.6.1-20220906.tar.gz | tar xz -C M1s_BL808_Linux_SDK/toolchain/linux_toolchain --strip-components=1
+
 ```
 
 ## Compile
+
+The simpliest way to compile is just running 
+
+```bash
+make
+```
+
+it works in the similar way as `build.sh` but it is compatible with most of CI/CDs and IDEs (like vscode or clion) and have similar syntax
+
+```bash
+make all # - cleans, then builds all targets below (w/o menuconfig)
+make opensbi # - builds openSBI (HAL-like blobs for running linux on rv)
+make menuconfig # - tui kernel configurator. If you know what is this - you know what is this
+make linux # - makes linux kernel
+make devicetree # - makes DTB (device tree blob from DTS)
+make bootloader # - makes bootloader
+make image # - makes image for flashing
+make clean # - cleans build artifacts
+```
+
+
+otherwise you can use build.sh script
 
 Step by step
 
 ```bash
 ./build.sh --help
 ./build.sh opensbi
-./build.sh kernel_config
+./build.sh kernel_config # generally it's a 'kmenuconfig'. Do everything on your own risk!
 ./build.sh kernel
 ./build.sh dtb
 ./build.sh low_load
@@ -85,3 +111,7 @@ Then find the firmwares under out
 ## Boot BL808 board
 
 Press and release RESET button, E907 will output log by IO14(TX)/IO15(RX) and C906 by IO5(RX)/IO8(TX)
+
+## WSL Support - Windows Subsystem for linux
+
+
