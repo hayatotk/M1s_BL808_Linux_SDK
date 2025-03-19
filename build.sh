@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -xeu
 
 SHELL_DIR=$(cd "$(dirname "$0")"; pwd)
 OUT_DIR=$SHELL_DIR/out
@@ -82,6 +82,7 @@ build_whole_bin()
     echo " "
     echo "================ build whole bin =================="
     cd $OUT_DIR
+    bash ../makepy.sh
     python3 merge_7_5Mbin.py
 }
 
